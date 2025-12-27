@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Hub - Career Placement Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --gray: #6b7280;
+            --light: #f3f4f6;
+            --white: #ffffff;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+
+        /* Login Page Styles */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .logo p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        select.form-control {
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: var(--white);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: var(--white);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: var(--white);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+.btn-outline:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* Dashboard Styles */
+        .dashboard-container {
+            display: none;
+            min-height: 100vh;
+            background: var(--light);
+        }
+
+        .dashboard-container.active {
+            display: block;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: var(--white);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info {
+            padding: 15px 20px;
+            background: var(--light);
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .nav-menu {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--dark);
+        }
+
+        .nav-item:hover {
+            background: var(--light);
+            color: var(--primary);
+        }
+
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .header {
+            background: var(--white);
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: var(--dark);
+            font-size: 1.8rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .stat-icon.primary {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+        }
+
+        .stat-icon.success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .stat-icon.warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .stat-icon.danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+.stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Tables */
+        .table-container {
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .table-header {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h2 {
+            color: var(--dark);
+            font-size: 1.3rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--light);
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 15px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        tbody tr {
+            transition: background 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: var(--light);
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .badge-info {
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--secondary);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            color: var(--dark);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--danger);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Job Card */
+        .job-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .job-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+.job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .job-title {
+            font-size: 1.3rem;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .company-name {
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+
+        .job-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .job-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .job-description {
+            color: var(--dark);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .job-skills {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .skill-tag {
+            background: var(--light);
+            color: var(--dark);
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--white);
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            display: none;
+            align-items: center;
+            gap: 15px;
+            z-index: 3000;
+            animation: slideInRight 0.3s ease;
+        }
+
+        .notification.active {
+            display: flex;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .notification.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        .notification.info {
+            border-left: 4px solid var(--secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid var(--light);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Charts */
+        .chart-container {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .chart-header {
+            margin-bottom: 20px;
+        }
+
+        .chart-header h3 {
+            color: var(--dark);
+            font-size: 1.2rem;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 200px;
+            padding: 10px;
+        }
+
+.bar {
+            width: 40px;
+            background: linear-gradient(to top, var(--primary), var(--secondary));
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .bar:hover {
+            transform: scaleY(1.05);
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.85rem;
+            color: var(--gray);
+            white-space: nowrap;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        /* Profile Form */
+        .profile-form {
+            display: grid;
+            gap: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            flex: 1;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: end;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="login-container" id="loginPage">
+        <div class="login-card">
+            <div class="logo">
+                <h1>🎓 Placement Hub</h1>
+                <p>Career Placement Management System</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-group">
+                    <label for="role">Login As</label>
+                    <select class="form-control" id="role" required>
+                        <option value="">Select Role</option>
+                        <option value="admin">Admin</option>
+                        <option value="student">Student</option>
+                        <option value="employer">Employer</option>
+                        <option value="officer">Placement Officer</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                    <span>🔐</span> Login to Dashboard
+                </button>
+            </form>
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb; text-align: center;">
+                <p style="color: var(--gray); font-size: 0.9rem;">Demo Credentials:</p>
+                <p style="color: var(--gray); font-size: 0.85rem;">Any email/password + select role</p>
+            </div>
+        </div>
+    </div>
+
+<!-- Dashboard Container -->
+    <div class="dashboard-container" id="dashboardContainer">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>🎓 Placement Hub</h2>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <div id="userName">User Name</div>
+                <div id="userRole" style="font-size: 0.85rem; color: var(--gray);">Role</div>
+            </div>
+            <nav class="nav-menu" id="navMenu">
+                <!-- Navigation items will be dynamically added -->
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <h1 id="pageTitle">Dashboard</h1>
+                <div class="header-actions">
+                    <button class="btn btn-outline" onclick="toggleNotifications()">
+                        <span>🔔</span> Notifications
+                    </button>
+                    <button class="btn btn-danger" onclick="logout()">
+                        <span>🚪</span> Logout
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div id="dashboardContent">
+                <!-- Content will be dynamically loaded -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Modal Title</h2>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Modal content -->
+            </div>
+            <div class="modal-footer" id="modalFooter">
+                <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <span id="notificationIcon">✓</span>
+        <div>
+            <div id="notificationTitle" style="font-weight: 600;">Success</div>
+            <div id="notificationMessage" style="font-size: 0.9rem; color: var(--gray);">Operation completed</div>
+        </div>
+    </div>
+
+    <script>
+        // Data Storage
+        let currentUser = null;
+        let jobs = [];
+        let applications = [];
+        let users = [];
+        let notifications = [];
+
+// Initialize with sample data
+        function initializeSampleData() {
+            // Sample jobs
+            jobs = [
+                {
+                    id: 1,
+                    title: "Software Developer",
+                    company: "Tech Corp",
+                    location: "Bangalore",
+                    type: "Full-time",
+                    salary: "8-12 LPA",
+                    description: "Looking for passionate software developers to join our team.",
+                    skills: ["JavaScript", "React", "Node.js", "MongoDB"],
+                    postedBy: "employer1",
+                    postedDate: new Date().toISOString(),
+                    applicants: []
+                },
+                {
+                    id: 2,
+                    title: "Data Analyst",
+                    company: "Data Solutions Inc",
+                    location: "Mumbai",
+                    type: "Full-time",
+                    salary: "6-10 LPA",
+                    description: "We need data analysts to help us make data-driven decisions.",
+                    skills: ["Python", "SQL", "Tableau", "Excel"],
+                    postedBy: "employer2",
+                    postedDate: new Date().toISOString(),
+                    applicants: []
+                },
+                {
+                    id: 3,
+                    title: "Marketing Intern",
+                    company: "Creative Agency",
+                    location: "Delhi",
+                    type: "Internship",
+                    salary: "15k/month",
+                    description: "Great opportunity for students to learn digital marketing.",
+                    skills: ["Social Media", "Content Writing", "SEO"],
+                    postedBy: "employer1",
+                    postedDate: new Date().toISOString(),
+                    applicants: []
+                }
+            ];
+
+            // Sample users
+            users = [
+                { id: 'admin1', email: 'admin@placement.com', role: 'admin', name: 'Admin User' },
+                { id: 'student1', email: 'student@placement.com', role: 'student', name: 'John Doe', skills: ['JavaScript', 'Python'] },
+                { id: 'student2', email: 'student2@placement.com', role: 'student', name: 'Jane Smith', skills: ['Java', 'SQL'] },
+                { id: 'employer1', email: 'employer@placement.com', role: 'employer', name: 'Tech Corp HR', company: 'Tech Corp' },
+                { id: 'employer2', email: 'employer2@placement.com', role: 'employer', name: 'Data Solutions HR', company: 'Data Solutions Inc' },
+                { id: 'officer1', email: 'officer@placement.com', role: 'officer', name: 'Placement Officer', department: 'Career Services' }
+            ];
+
+            // Sample applications
+            applications = [
+                { id: 1, studentId: 'student1', jobId: 1, status: 'applied', appliedDate: new Date().toISOString() },
+                { id: 2, studentId: 'student2', jobId: 2, status: 'interview', appliedDate: new Date().toISOString() },
+                { id: 3, studentId: 'student1', jobId: 3, status: 'placed', appliedDate: new Date().toISOString() }
+            ];
+
+            // Save to localStorage
+            localStorage.setItem('jobs', JSON.stringify(jobs));
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('applications', JSON.stringify(applications));
+        }
+
+        // Load data from localStorage
+        function loadData() {
+            const storedJobs = localStorage.getItem('jobs');
+            const storedUsers = localStorage.getItem('users');
+            const storedApplications = localStorage.getItem('applications');
+
+            if (storedJobs) jobs = JSON.parse(storedJobs);
+            if (storedUsers) users = JSON.parse(storedUsers);
+            if (storedApplications) applications = JSON.parse(storedApplications);
+
+if (!storedJobs  !storedUsers) {
+                initializeSampleData();
+            }
+        }
+
+        // Login Form Handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+
+            // Find user or create demo user
+            let user = users.find(u => u.email === email && u.role === role);
+            
+            if (!user) {
+                // Create demo user
+                user = {
+                    id: role + '_' + Date.now(),
+                    email: email,
+                    role: role,
+                    name: email.split('@')[0].replace('.', ' ').replace(/\b\w/g, l => l.toUpperCase()),
+                    ...(role === 'student' && { skills: ['JavaScript', 'Python'] }),
+                    ...(role === 'employer' && { company: 'Demo Company' }),
+                    ...(role === 'officer' && { department: 'Career Services' })
+                };
+                users.push(user);
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+
+            currentUser = user;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            showNotification('success', 'Login Successful', `Welcome back, ${user.name}!`);
+            
+            setTimeout(() => {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('dashboardContainer').classList.add('active');
+                loadDashboard();
+            }, 1000);
+        });
+
+        // Load Dashboard
+        function loadDashboard() {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (!user) return;
+
+            // Update user info
+            document.getElementById('userAvatar').textContent = user.name.charAt(0).toUpperCase();
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userRole').textContent = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+
+            // Load navigation based on role
+            loadNavigation(user.role);
+            
+            // Load default dashboard
+            loadDashboardContent(user.role, 'overview');
+        }
+
+        // Load Navigation Menu
+        function loadNavigation(role) {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.innerHTML = '';
+
+            const menuItems = {
+                admin: [
+                    { id: 'overview', label: 'Overview', icon: '📊' },
+                    { id: 'users', label: 'Manage Users', icon: '👥' },
+                    { id: 'jobs', label: 'All Jobs', icon: '💼' },
+                    { id: 'applications', label: 'Applications', icon: '📋' },
+                    { id: 'reports', label: 'Reports', icon: '📈' },
+                    { id: 'settings', label: 'Settings', icon: '⚙️' }
+                ],
+                student: [
+                    { id: 'overview', label: 'Dashboard', icon: '📊' },
+                    { id: 'jobs', label: 'Browse Jobs', icon: '💼' },
+                    { id: 'applications', label: 'My Applications', icon: '📋' },
+                    { id: 'profile', label: 'My Profile', icon: '👤' },
+                    { id: 'notifications', label: 'Notifications', icon: '🔔' }
+                ],
+                employer: [
+                    { id: 'overview', label: 'Dashboard', icon: '📊' },
+                    { id: 'post-job', label: 'Post Job', icon: '➕' },
+                    { id: 'my-jobs', label: 'My Job Postings', icon: '💼' },
+                    { id: 'applications', label: 'Applications', icon: '📋' },
+                    { id: 'candidates', label: 'Candidates', icon: '👥' },
+                    { id: 'profile', label: 'Company Profile', icon: '🏢' }
+                ],
+                officer: [
+                    {
+
+id: 'overview', label: 'Dashboard', icon: '📊' },
+                    { id: 'placements', label: 'Placement Records', icon: '📈' },
+                    { id: 'jobs', label: 'Job Listings', icon: '💼' },
+                    { id: 'students', label: 'Students', icon: '👥' },
+                    { id: 'employers', label: 'Employers', icon: '🏢' },
+                    { id: 'reports', label: 'Reports', icon: '📊' },
+                    { id: 'analytics', label: 'Analytics', icon: '📈' }
+                ]
+            };
+
+            const items = menuItems[role]  [];
+            items.forEach(item => {
+                const navItem = document.createElement('div');
+                navItem.className = 'nav-item';
+                navItem.innerHTML = <span>${item.icon}</span> ${item.label};
+                navItem.onclick = () => loadDashboardContent(role, item.id);
+                navMenu.appendChild(navItem);
+            });
+
+            // Set first item as active
+            if (navMenu.firstChild) {
+                navMenu.firstChild.classList.add('active');
+            }
+        }
+
+        // Load Dashboard Content
+        function loadDashboardContent(role, section) {
+            // Update active nav item
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.textContent.toLowerCase().includes(section.replace('-', ' '))) {
+                    item.classList.add('active');
+                }
+            });
+
+            const content = document.getElementById('dashboardContent');
+            
+            switch(section) {
+                case 'overview':
+                    loadOverview(role);
+                    break;
+                case 'jobs':
+                    loadJobs(role);
+                    break;
+                case 'applications':
+                    loadApplications(role);
+                    break;
+                case 'users':
+                    loadUsers();
+                    break;
+                case 'post-job':
+                    showPostJobForm();
+                    break;
+                case 'my-jobs':
+                    loadMyJobs();
+                    break;
+                case 'profile':
+                    loadProfile(role);
+                    break;
+                case 'placements':
+                    loadPlacements();
+                    break;
+                case 'students':
+                    loadStudents();
+                    break;
+                case 'employers':
+                    loadEmployers();
+                    break;
+                case 'reports':
+                    loadReports(role);
+                    break;
+                case 'analytics':
+                    loadAnalytics();
+                    break;
+                case 'settings':
+                    loadSettings();
+                    break;
+                case 'notifications':
+                    loadNotifications();
+                    break;
+                case 'candidates':
+                    loadCandidates();
+                    break;
+                default:
+                    loadOverview(role);
+            }
+        }
+
+        // Load Overview Dashboard
+        function loadOverview(role) {
+            const content = document.getElementById('dashboardContent');
+            document.getElementById('pageTitle').textContent = 'Dashboard Overview';
+let statsHTML = '';
+            
+            if (role === 'admin') {
+                statsHTML = `
+                    <div class="cards-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon primary">👥</div>
+                            <div class="stat-value">${users.length}</div>
+                            <div class="stat-label">Total Users</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon success">💼</div>
+                            <div class="stat-value">${jobs.length}</div>
+                            <div class="stat-label">Active Jobs</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon warning">📋</div>
+                            <div class="stat-value">${applications.length}</div>
+                            <div class="stat-label">Applications</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon danger">🎓</div>
+                            <div class="stat-value">${applications.filter(a => a.status === 'placed').length}</div>
+                            <div class="stat-label">Placed Students</div>
+                        </div>
+                    </div>
+                `;
+            } else if (role === 'student') {
+                const myApplications = applications.filter(a => a.studentId === currentUser.id);
+                statsHTML = `
+                    <div class="cards-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon primary">💼</div>
+                            <div class="stat-value">${jobs.length}</div>
+                            <div class="stat-label">Available Jobs</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon success">📋</div>
+                            <div class="stat-value">${myApplications.length}</div>
+                            <div class="stat-label">My Applications</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon warning">👀</div>
+                            <div class="stat-value">${myApplications.filter(a => a.status === 'viewed').length}</div>
+                            <div class="stat-label">Applications Viewed</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon danger">📞</div>
+                            <div class="stat-value">${myApplications.filter(a => a.status === 'interview').length}</div>
+                            <div class="stat-label">Interview Calls</div>
+                        </div>
+                    </div>
+                `;
+            } else if (role === 'employer') {
+                const myJobs = jobs.filter(j => j.postedBy === currentUser.id);
+                statsHTML = `
+                    <div class="cards-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon primary">💼</div>
+                            <div class="stat-value">${myJobs.length}</div>
+                            <div class="stat-label">Posted Jobs</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon success">📋</div>
+                            <div class="stat-value">${myJobs.reduce((sum, job) => sum + job.applicants.length, 0)}</div>
+                            <div class="stat-label">Total Applicants</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon warning">👀</div>
+                            <div class="stat-value">${applications.filter(a => a.status === 'interview' && myJobs.some(j => j.id === a.jobId)).length}</div>
+<div class="stat-label">Shortlisted</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon danger">✅</div>
+                            <div class="stat-value">${applications.filter(a => a.status === 'placed' && myJobs.some(j => j.id === a.jobId)).length}</div>
+                            <div class="stat-label">Hired</div>
+                        </div>
+                    </div>
+                `;
+            } else if (role === 'officer') {
+                statsHTML = `
+                    <div class="cards-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon primary">👥</div>
+                            <div class="stat-value">${users.filter(u => u.role === 'student').length}</div>
+                            <div class="stat-label">Total Students</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon success">🏢</div>
+                            <div class="stat-value">${users.filter(u => u.role === 'employer').length}</div>
+                            <div class="stat-label">Registered Companies</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon warning">💼</div>
+                            <div class="stat-value">${jobs.length}</div>
+                            <div class="stat-label">Active Job Postings</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon danger">🎓</div>
+                            <div class="stat-value">${applications.filter(a => a.status === 'placed').length}</div>
+                            <div class="stat-label">Students Placed</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Add recent activities and charts
+            content.innerHTML = statsHTML + `
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Placement Statistics</h3>
+                    </div>
+                    <div class="bar-chart">
+                        <div class="bar" style="height: 70%;">
+                            <div class="bar-value">24</div>
+                            <div class="bar-label">Jan</div>
+                        </div>
+                        <div class="bar" style="height: 85%;">
+                            <div class="bar-value">32</div>
+                            <div class="bar-label">Feb</div>
+                        </div>
+                        <div class="bar" style="height: 60%;">
+                            <div class="bar-value">18</div>
+                            <div class="bar-label">Mar</div>
+                        </div>
+                        <div class="bar" style="height: 90%;">
+                            <div class="bar-value">45</div>
+                            <div class="bar-label">Apr</div>
+                        </div>
+                        <div class="bar" style="height: 75%;">
+                            <div class="bar-value">28</div>
+                            <div class="bar-label">May</div>
+                        </div>
+                        <div class="bar" style="height: 80%;">
+                            <div class="bar-value">35</div>
+                            <div class="bar-label">Jun</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <div class="table-header">
+                        <h2>Recent Activities</h2>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Activity</th>
+                                <th>User</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+</thead>
+                        <tbody>
+                            <tr>
+                                <td>New job posted</td>
+                                <td>Tech Corp</td>
+                                <td>${new Date().toLocaleDateString()}</td>
+                                <td><span class="badge badge-success">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>Student applied</td>
+                                <td>John Doe</td>
+                                <td>${new Date().toLocaleDateString()}</td>
+                                <td><span class="badge badge-info">Pending</span></td>
+                            </tr>
+                            <tr>
+                                <td>Interview scheduled</td>
+                                <td>Data Solutions</td>
+                                <td>${new Date().toLocaleDateString()}</td>
+                                <td><span class="badge badge-warning">Scheduled</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        // Load Jobs
+        function loadJobs(role) {
+            const content = document.getElementById('dashboardContent');
+            document.getElementById('pageTitle').textContent = role === 'student' ? 'Browse Jobs' : 'All Jobs';
+
+            let jobsHTML = '<div class="search-bar"><input type="text" class="form-control" placeholder="Search jobs..." id="jobSearch"><button class="btn btn-primary" onclick="searchJobs()">Search</button></div>';
+            
+            jobs.forEach(job => {
+                const poster = users.find(u => u.id === job.postedBy);
+                jobsHTML += `
+                    <div class="job-card">
+                        <div class="job-header">
+                            <div>
+                                <div class="job-title">${job.title}</div>
+                                <div class="company-name">${job.company}</div>
+                            </div>
+                            ${role === 'student' ? <button class="btn btn-primary btn-sm" onclick="applyForJob(${job.id})">Apply Now</button> : ''}
+                        </div>
+                        <div class="job-meta">
+                            <div class="job-meta-item">📍 ${job.location}</div>
+                            <div class="job-meta-item">💼 ${job.type}</div>
+                            <div class="job-meta-item">💰 ${job.salary}</div>
+                        </div>
+                        <div class="job-description">${job.description}</div>
+                        <div class="job-skills">
+                            ${job.skills.map(skill => <span class="skill-tag">${skill}</span>).join('')}
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <small style="color: var(--gray);">Posted by ${poster?.name  'Unknown'} on ${new Date(job.postedDate).toLocaleDateString()}</small>
+                            <small style="color: var(--gray);">${job.applicants?.length  0} applicants</small>
+                        </div>
+                    </div>
+                `;
+            });
+
+            content.innerHTML = jobsHTML;
+        }
+
+        // Load Applications
+        function loadApplications(role) {
+            const content = document.getElementById('dashboardContent');
+            document.getElementById('pageTitle').textContent = role === 'student' ? 'My Applications' : 'Applications';
+
+            let filteredApplications = applications;
+            if (role === 'student') {
+                filteredApplications = applications.filter(a => a.studentId === currentUser.id);
+            } else if (role === 'employer') {
+                const myJobs = jobs.filter(j => j.postedBy === currentUser.id);
+                filteredApplications = applications.filter(a => myJobs.some(j => j.id === a.jobId));
+            }
+let applicationsHTML = `
+                <div class="table-container">
+                    <div class="table-header">
+                        <h2>Application List</h2>
+                        ${role === 'employer' ? '<button class="btn btn-primary" onclick="exportApplications()">Export</button>' : ''}
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Job Title</th>
+                                <th>Company</th>
+                                ${role !== 'student' ? '<th>Student</th>' : ''}
+                                <th>Applied Date</th>
+                                <th>Status</th>
+                                ${role === 'employer' ? '<th>Actions</th>' : ''}
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            filteredApplications.forEach(app => {
+                const job = jobs.find(j => j.id === app.jobId);
+                const student = users.find(u => u.id === app.studentId);
+                
+                if (job) {
+                    applicationsHTML += `
+                        <tr>
+                            <td>${job.title}</td>
+                            <td>${job.company}</td>
+                            ${role !== 'student' ? <td>${student?.name || 'Unknown'}</td> : ''}
+                            <td>${new Date(app.appliedDate).toLocaleDateString()}</td>
+                            <td><span class="badge badge-${getStatusBadgeClass(app.status)}">${app.status}</span></td>
+                            ${role === 'employer' ? `
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-sm btn-success" onclick="updateApplicationStatus(${app.id}, 'interview')">Interview</button>
+                                        <button class="btn btn-sm btn-danger" onclick="updateApplicationStatus(${app.id}, 'rejected')">Reject</button>
+                                    </div>
+                                </td>
+                            ` : ''}
+                        </tr>
+                    `;
+                }
+            });
+
+            applicationsHTML += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            content.innerHTML = applicationsHTML;
+        }
+
+        // Show Post Job Form
+        function showPostJobForm() {
+            const content = document.getElementById('dashboardContent');
+            document.getElementById('pageTitle').textContent = 'Post New Job';
+
+content.innerHTML = `
+                <div class="job-card">
+                    <h2>Job Details</h2>
+                    <form id="postJobForm" class="profile-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Job Title</label>
+                                <input type="text" class="form-control" id="jobTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Company Name</label>
+                                <input type="text" class="form-control" id="jobCompany" value="${currentUser.company || ''}" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Location</label>
+                                <input type="text" class="form-control" id="jobLocation" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Job Type</label>
+                                <select class="form-control" id="jobType" required>
+                                    <option value="Full-time">Full-time</option>
+                                    <option value="Part-time">Part-time</option>
+                                    <option value="Internship">Internship</option>
+                                    <option value="Contract">Contract</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Salary Range</label>
+                                <input type="text" class="form-control" id="jobSalary" placeholder="e.g., 8-12 LPA" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Skills Required</label>
+                                <input type="text" class="form-control" id="jobSkills" placeholder="e.g., JavaScript, React, Node.js" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Job Description</label>
+                            <textarea class="form-control" id="jobDescription" rows="5" required></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Post Job</button>
+                            <button type="button" class="btn btn-secondary" onclick="loadDashboardContent('employer', 'overview')">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+
+            document.getElementById('postJobForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const newJob = {
+                    id: Date.now(),
+                    title: document.getElementById('jobTitle').value,
+                    company: document.getElementById('jobCompany').value,
+                    location: document.getElementById('jobLocation').value,
+                    type: document.getElementById('jobType').value,
+                    salary: document.getElementById('jobSalary').value,
+                    skills: document.getElementById('jobSkills').value.split(',').map(s => s.trim()),
+                    description: document.getElementById('jobDescription').value,
+                    postedBy: currentUser.id,
+                    postedDate: new Date().toISOString(),
+                    applicants: []
+                };
+jobs.push(newJob);
+                localStorage.setItem('jobs', JSON.stringify(jobs));
+                
+                showNotification('success', 'Job Posted', 'Your job has been posted successfully!');
+                loadDashboardContent('employer', 'my-jobs');
+            });
+        }
+
+        // Load My Jobs (Employer)
+        function loadMyJobs() {
+            const content = document.getElementById('dashboardContent');
+            document.getElementById('pageTitle').textContent = 'My Job Postings';
+
+            const myJobs = jobs.filter(j => j.postedBy === currentUser.id);
+            
+            let jobsHTML = '';
+            myJobs.forEach(job => {
+                jobsHTML += `
+                    <div class="job-card">
+                        <div class="job-header">
+                            <div>
+                                <div class="job-title">${job.title}</div>
+                                <div class="company-name">${job.company}</div>
+                            </div>
+                            <div class="action-buttons">
+                                <button class="btn btn-sm btn-warning" onclick="editJob(${job.id})">Edit</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteJob(${job.id})">Delete</button>
+                            </div>
+                        </div>
+                        <div class="job-meta">
+                            <div class="job-meta-item">📍 ${job.location}</div>
+                            <div class="job-meta-item">💼 ${job.type}</div>
+                            <div class="job-meta-item">💰 ${job.salary}</div>
+                        </div>
+                        <div class="job-description">${job.description}</div>
+                        <div class="job-skills">
+                            ${job.skills.map(skill => <span class="skill-tag">${skill}</span>).join('')}
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <small style="color: var(--gray);">Posted on ${new Date(job.postedDate).toLocaleDateString()}</small>
+                            <button class="btn btn-sm btn-outline" onclick="viewJobApplicants(${job.id})">View Applicants (${job.applicants?.length  0})</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            content.innerHTML = jobsHTML  '<p>No jobs posted yet. <a href="#" onclick="loadDashboardContent(\'employer\', \'post-job\')">Post your first job</a></p>';
+        }
+
+        // Load Profile
+        function loadProfile(role) {
+            const content = document.getElementById('dashboardContent');
+            document.getElementById('pageTitle').textContent = role === 'employer' ? 'Company Profile' : 'My Profile';
+
+            let profileHTML = `
+                <div class="job-card">
+                    <h2>Profile Information</h2>
+                    <form id="profileForm" class="profile-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" class="form-control" id="profileName" value="${currentUser.name}" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control" id="profileEmail" value="${currentUser.email}" required>
+                            </div>
+                        </div>
+            `;
+if (role === 'student') {
+                profileHTML += `
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="tel" class="form-control" id="profilePhone" placeholder="Enter phone number">
+                        </div>
+                        <div class="form-group">
+                            <label>Course</label>
+                            <input type="text" class="form-control" id="profileCourse" placeholder="e.g., B.Tech Computer Science">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Year of Study</label>
+                            <select class="form-control" id="profileYear">
+                                <option value="1">1st Year</option>
+                                <option value="2">2nd Year</option>
+                                <option value="3">3rd Year</option>
+                                <option value="4">4th Year</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>CGPA</label>
+                            <input type="number" class="form-control" id="profileCGPA" step="0.01" min="0" max="10" placeholder="Enter CGPA">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Skills</label>
+                        <input type="text" class="form-control" id="profileSkills" value="${currentUser.skills?.join(', ')  ''}" placeholder="e.g., JavaScript, Python, Java">
+                    </div>
+                    <div class="form-group">
+                        <label>Resume</label>
+                        <input type="file" class="form-control" id="profileResume" accept=".pdf,.doc,.docx">
+                    </div>
+                `;
+            } else if (role === 'employer') {
+                profileHTML += `
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Company Name</label>
+                            <input type="text" class="form-control" id="profileCompany" value="${currentUser.company  ''}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Industry</label>
+                            <input type="text" class="form-control" id="profileIndustry" placeholder="e.g., IT, Finance, Healthcare">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Website</label>
+                            <input type="url" class="form-control" id="profileWebsite" placeholder="https://company.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Company Size</label>
+                            <select class="form-control" id="profileSize">
+                                <option value="1-10">1-10 employees</option>
+                                <option value="11-50">11-50 employees</option>
+                                <option value="51-200">51-200 employees</option>
+                                <option value="201-500">201-500 employees</option>
+                                <option value="500+">500+ employees</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Company Description</label>
+                        <textarea class="form-control" id="profileDescription" rows="4" placeholder="Describe your company..."></textarea>
+                    </div>
+                `;
+            }
+profileHTML += `
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="button" class="btn btn-secondary" onclick="loadDashboardContent('${role}', 'overview')">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+
+            content.innerHTML = profileHTML;
+
+            document.getElementById('profileForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Update user profile
+                const updatedUser = { ...currentUser };
+                updatedUser.name = document.getElementById('profileName').value;
+                updatedUser.email = document.getElementById('profileEmail').value;
+
+                if (role === 'student') {
+                    updatedUser.phone = document.getElementById('profilePhone').value;
+                    updatedUser.course = document.getElementById('profileCourse').value;
+                    updatedUser.year = document.getElementById('profileYear').value;
+                    updatedUser.cgpa = document.getElementById('profileCGPA').value;
+                    updatedUser.skills = document.getElementById('profileSkills').value.split(',').map(s => s.trim());
+                } else if (role === 'employer') {
+                    updatedUser.company = document.getElementById('profileCompany').value;
+                    updatedUser.industry = document.getElementById('profileIndustry').value;
+                    updatedUser.website = document.getElementById('profileWebsite').value;
+                    updatedUser.size = document.getElementById('profileSize').value;
+                    updatedUser.description = document.getElementById('profileDescription').value;
+                }
+
+                // Update in users array
+                const userIndex = users.findIndex(u => u.id === currentUser.id);
+                users[userIndex] = updatedUser;
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                currentUser = updatedUser;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+                showNotification('success', 'Profile Updated', 'Your profile has been updated successfully!');
+                loadDashboard();
+            });
+        }
+
+        // Load Users (Admin)
+        function loadUsers() {
+            const content = document.getElementById('dashboardContent');
+            document.getElementById('pageTitle').textContent = 'Manage Users';
+
+            let usersHTML = `
+                <div class="table-container">
+                    <div class="table-header">
+                        <h2>All Users</h2>
+                        <button class="btn btn-primary" onclick="addNewUser()">Add New User</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Registration Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+users.forEach(user => {
+                usersHTML += `
+                    <tr>
+                        <td>${user.name}</td>
+                        <td>${user.email}</td>
+                        <td><span class="badge badge-info">${user.role}</span></td>
+                        <td>${new Date().toLocaleDateString()}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-sm btn-warning" onclick="editUser('${user.id}')">Edit</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteUser('${user.id}')">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            usersHTML += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            content.innerHTML = usersHTML;
+        }
+
+        // Load Placements (Officer)
+        function loadPlacements() {
+            const content = document.getElementById('dashboardContent');
+            document.getElementById('pageTitle').textContent = 'Placement Records';
+
+            const placedStudents = applications.filter(a => a.status === 'placed');
+            
+            let placementsHTML = `
+                <div class="cards-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon success">🎓</div>
+                        <div class="stat-value">${placedStudents.length}</div>
+                        <div class="stat-label">Total Placements</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon primary">💼</div>
+                        <div class="stat-value">${jobs.length}</div>
+                        <div class="stat-label">Active Recruiters</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning">📈</div>
+                        <div class="stat-value">${Math.round((placedStudents.length / users.filter(u => u.role === 'student').length) * 100)}%</div>
+                        <div class="stat-label">Placement Rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon danger">💰</div>
+                        <div class="stat-value">8.5 LPA</div>
+                        <div class="stat-label">Average Package</div>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <div class="table-header">
+                        <h2>Recent Placements</h2>
+                        <button class="btn btn-primary" onclick="exportPlacements()">Export Report</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Company</th>
+                                <th>Position</th>
+                                <th>Package</th>
+                                <th>Placement Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            placedStudents.forEach(placement => {
+                const student = users.find(u => u.id === placement.studentId);
+                const job = jobs.find(j => j.id === placement.jobId);
+                
+                placementsHTML += `
+                    <tr>
+                        <td>${student?.name  'Unknown'}</td>
+                        <td>${job?.company  'Unknown'}</td>
+                        <td>${job?.title  'Unknown'}</td>
+                        <td>${job?.salary  'N/A'}</td>
+                        <td>${new Date(placement.appliedDate).toLocaleDateString()}</td>
+                    </tr>
+                `;
+            });
+placementsHTML += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            content.innerHTML = placementsHTML;
+        }
+
+        // Load Students (Officer)
+        function loadStudents() {
+            const content = document.getElementById('dashboardContent');
+            document.getElementById('pageTitle').textContent = 'Students';
+
+            const students = users.filter(u => u.role === 'student');
+            
+            let studentsHTML = `
+                <div class="search-bar">
+                    <input type="text" class="form-control" placeholder="Search students..." id="studentSearch">
+                    <button class="btn btn-primary" onclick="searchStudents()">Search</button>
+                </div>
+                <div class="table-container">
+                    <div class="table-header">
+                        <h2>Student List</h2>
+                        <button class="btn btn-primary" onclick="exportStudents()">Export List</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Skills</th>
+                                <th>Applications</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            students.forEach(student => {
+                const studentApplications = applications.filter(a => a.studentId === student.id);
+                const isPlaced = studentApplications.some(a => a.status === 'placed');
+                
+                studentsHTML += `
+                    <tr>
+                        <td>${student.name}</td>
+                        <td>${student.email}</td>
+                        <td>${student.skills?.join(', ')  'N/A'}</td>
+                        <td>${studentApplications.length}</td>
+                        <td><span class="badge badge-${isPlaced ? 'success' : 'warning'}">${isPlaced ? 'Placed' : 'Active'}</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-sm btn-primary" onclick="viewStudentProfile('${student.id}')">View Profile</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            studentsHTML += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            content.innerHTML = studentsHTML;
+        }
+
+        // Load Employers (Officer)
+        function loadEmployers() {
+            const content = document.getElementById('dashboardContent');
+            document.getElementById('pageTitle').textContent = 'Employers';
+const employers = users.filter(u => u.role === 'employer');
+            
+            let employersHTML = `
+                <div class="table-container">
+                    <div class="table-header">
+                        <h2>Registered Companies</h2>
+                        <button class="btn btn-primary" onclick="exportEmployers()">Export List</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Company Name</th>
+                                <th>Contact Person</th>
+                                <th>Email</th>
+                                <th>Jobs Posted</th>
+                                <th>Total Applicants</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            employers.forEach(employer => {
+                const employerJobs = jobs.filter(j => j.postedBy === employer.id);
+                const totalApplicants = employerJobs.reduce((sum, job) => sum + (job.applicants?.length  0), 0);
+                
+                employersHTML += `
+                    <tr>
+                        <td>${employer.company  'N/A'}</td>
+                        <td>${employer.name}</td>
+                        <td>${employer.email}</td>
+                        <td>${employerJobs.length}</td>
+                        <td>${totalApplicants}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-sm btn-primary" onclick="viewEmployerProfile('${employer.id}')">View Profile</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            employersHTML += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            content.innerHTML = employersHTML;
+        }
+
+        // Load Reports
+        function loadReports(role) {
+            const content = document.getElementById('dashboardContent');
+            document.getElementById('pageTitle').textContent = 'Reports';
